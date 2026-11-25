@@ -71,7 +71,7 @@ Marine-Guard-AI-/
 │   ├── inference.py                   # Shared YOLO inference
 │   └── streamlit_app.py               # User interface
 ├── models/
-│   └── best.pt                        # Add selected original checkpoint
+│   └── best.pt                        # Verified original selected checkpoint
 ├── notebooks/
 │   ├── data_preparation/              # Historical preprocessing work
 │   └── model_development/             # 01–07: selection through reporting
@@ -93,13 +93,9 @@ Marine-Guard-AI-/
 
 **Requirements:** Python 3.11 or 3.12, the selected original `best.pt`, and the application dependencies.
 
-1. Retrieve the selected checkpoint from the team's authorized Google Drive location:
+1. Clone the repository. **The original selected YOLO26n checkpoint is already included at `models/best.pt`.** Its SHA-256 is `2719a2bf1e07f922e70c65230871529ad1303b1f706e6f33beb98ad7812a2005`. The source checkpoint came from `MarineGuard_Model_Selection/budget20_30_v1/runs_budget20_30_v1/final/yolo26n/weights/best.pt`.
 
-   `MarineGuard_Model_Selection/budget20_30_v1/runs_budget20_30_v1/final/yolo26n/weights/best.pt`
-
-2. Copy it to **`models/best.pt`**. Do **not** substitute the later Version 2 checkpoint.
-
-3. From the repository root in **VS Code PowerShell**:
+2. From the repository root in **VS Code PowerShell**:
 
    ```powershell
    python -m venv .venv
@@ -110,13 +106,13 @@ Marine-Guard-AI-/
 
    The smoke test verifies that the model loads, inference runs and a PNG is produced. A synthetic input **does not measure accuracy**. For a meaningful visual check, run `python -m scripts.smoke_test_app --image "path/to/underwater_image.jpg"` with an authorized representative image.
 
-4. Open the local Streamlit address and test upload, predicted labels, no-detection messaging and annotated-image download.
+3. Open the local Streamlit address and test upload, predicted labels, no-detection messaging and annotated-image download.
 
-**Note:** The repository currently contains only a model placeholder. Streamlit cannot perform predictions until the correct checkpoint has been supplied. CPU-only startup and inference may be slower than Colab GPU inference.
+**Verification:** The checkpoint passed SHA-256 validation and the automated inference smoke test in GitHub Actions. It loaded as a Net/Rope detector, completed inference on a synthetic image and produced an annotated PNG. Real underwater-image visual checks and a hosted-app test remain necessary. CPU-only inference can be slower than Colab GPU.
 
 ## Deploy to Streamlit Community Cloud
 
-1. Confirm the team can legally distribute the trained checkpoint, then make it available to the deployment at `models/best.pt`. Keep datasets and credentials out of the repository.
+1. Confirm checkpoint distribution is permitted; `models/best.pt` is included in the repository. Keep datasets and credentials out of the repository.
 2. Merge the reviewed changes to the branch you plan to deploy.
 3. In [Streamlit Community Cloud](https://share.streamlit.io), select the repository `riri242/Marine-Guard-AI-`, deployment branch and **entrypoint `app/streamlit_app.py`**.
 4. Select a supported Python version and verify dependency installation, memory usage and image inference using the deployed URL.
@@ -162,4 +158,4 @@ Future development may include independently annotated Net/Rope imagery from add
 
 This project builds on Ultralytics YOLO and third-party research datasets. Before publishing or distributing model weights, review the applicable **Ultralytics AGPL-3.0 or commercial licensing terms** and the individual dataset licenses. Dataset links, license status and redistribution rights should be verified by the team. Do not upload unlicensed raw images, private data or credentials.
 
-**Project status:** Selected checkpoint and inference code are prepared; repository integration, deployment checks and application-level evaluation remain to be completed.
+**Project status:** Original selected checkpoint is committed and the automated inference smoke test passed. Representative underwater-image checks, Streamlit deployment, reviewer time savings, and application-level latency reporting remain to be completed.
