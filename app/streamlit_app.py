@@ -10,7 +10,7 @@ from PIL import Image, UnidentifiedImageError
 from inference import load_model, png_bytes, predict
 
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_FILE = BASE_DIR / "models" / "best.pt"
+MODEL_FILE = BASE_DIR.parent / "models" / "best.pt"
 
 st.set_page_config(page_title="MarineGuard AI", page_icon="🌊", layout="wide")
 st.title("🌊 MarineGuard AI")

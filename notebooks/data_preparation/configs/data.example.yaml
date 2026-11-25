@@ -1,0 +1,11 @@
+# Example YOLO dataset configuration.
+# Update 'path' to the prepared dataset location on your own machine.
+# This file is documentation only; it is not the original experiment data.yaml.
+path: /absolute/path/to/MarineGuard_YOLO_Fixed
+train: images/train
+val: images/val
+test: images/test
+nc: 2
+names:
+  0: Net
+  1: Rope
