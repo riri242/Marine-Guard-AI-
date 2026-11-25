@@ -42,6 +42,12 @@ python scripts/reproduce_evaluation.py --dataset "D:\\path\\to\\MarineGuard_YOLO
 
 The data-preparation provenance for the 193 CleanSea images and 300 additional backgrounds must be fully documented before the original training run can be claimed as end-to-end reproducible.
 
+## Data and report artifacts
+
+- [Datasets and provenance](docs/datasets.md) — sources, class mapping, usage and dataset limitations.
+- [Final evaluation notebook](notebooks/model_development/07_final_model_evaluation_reporting.ipynb) — reevaluate the original selected checkpoint (no training).
+- [Report figures](reports/figures/README.md) — seven PNG charts from recorded experimental results, with a regeneration script.
+
 ## About prediction settings
 
 - Input resolution `imgsz=640`.
