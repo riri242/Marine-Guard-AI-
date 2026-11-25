@@ -33,7 +33,7 @@ CPU inference works but can be slower than Colab GPU. Community Cloud resource l
 
 ## Reproduce evaluation
 
-See [reproducibility instructions](docs/reproducibility.md). The dedicated evaluation script verifies dataset counts, labels, and image hashes, then evaluates the selected checkpoint against the recorded validation and TrashCan metrics. It does not retrain. The six historical experiment notebooks remain under `notebooks/model_development/`.
+See [reproducibility instructions](docs/reproducibility.md) and the [methodology checklist](docs/methodology_checklist.md). The dedicated evaluation script verifies dataset counts, labels, and image hashes, then evaluates the selected checkpoint against the recorded validation and TrashCan metrics. It does not retrain. The six historical experiment notebooks remain under `notebooks/model_development/`.
 
 ```powershell
 python -m pip install -r requirements-research.txt
