@@ -10,14 +10,14 @@ An underwater research prototype detecting **Net** and **Rope** objects in uploa
 3. Install Python (3.11 or 3.12 recommended), then:
    ```bash
    pip install -r requirements.txt
-   streamlit run streamlit_app.py
+   streamlit run app/streamlit_app.py
    ```
 4. Upload JPG/PNG files in the application.
 
 ## Repository layout
 
-- `inference.py`: the reusable image prediction function, including provisional class thresholds and structured detection results.
-- `streamlit_app.py`: self-contained upload UI. Calls `inference.py` in the same Python process.
+- `app/inference.py`: the reusable image prediction function, including provisional class thresholds and structured detection results.
+- `app/streamlit_app.py`: self-contained upload UI. Calls `inference.py` in the same Python process.
 - `models/best.pt`: trained original YOLO26n checkpoint (you supply this file).
 - `requirements.txt`: Python dependencies.
 - `packages.txt`: system OpenCV runtime support for Linux hosting.
@@ -26,10 +26,21 @@ An underwater research prototype detecting **Net** and **Rope** objects in uploa
 
 1. Push these source files **and the authorized model checkpoint** to a GitHub repository.
 2. Open https://share.streamlit.io and create an app from the repo.
-3. Choose the branch and set **main file path** to `streamlit_app.py`.
+3. Choose the branch and set **main file path** to `app/streamlit_app.py`.
 4. Check the app logs if dependencies or memory prevent startup.
 
 CPU inference works but can be slower than Colab GPU. Community Cloud resource limits depend on deployment conditions.
+
+## Reproduce evaluation
+
+See [reproducibility instructions](docs/reproducibility.md). The dedicated evaluation script verifies dataset counts, labels, and image hashes, then evaluates the selected checkpoint against the recorded validation and TrashCan metrics. It does not retrain. The six historical experiment notebooks remain under `notebooks/model_development/`.
+
+```powershell
+python -m pip install -r requirements-research.txt
+python scripts/reproduce_evaluation.py --dataset "D:\\path\\to\\MarineGuard_YOLO_Fixed" --checkpoint models/best.pt --device cpu
+```
+
+The data-preparation provenance for the 193 CleanSea images and 300 additional backgrounds must be fully documented before the original training run can be claimed as end-to-end reproducible.
 
 ## About prediction settings
 
