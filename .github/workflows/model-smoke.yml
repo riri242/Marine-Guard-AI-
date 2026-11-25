@@ -1,0 +1,46 @@
+name: Model integration smoke test
+
+on:
+  push:
+    branches:
+      - main
+      - docs/reproducibility-and-notebook-cleanup
+    paths:
+      - "models/best.pt"
+      - "app/**"
+      - "scripts/smoke_test_app.py"
+      - "requirements.txt"
+      - ".github/workflows/model-smoke.yml"
+  pull_request:
+    paths:
+      - "models/best.pt"
+      - "app/**"
+      - "scripts/smoke_test_app.py"
+      - "requirements.txt"
+      - ".github/workflows/model-smoke.yml"
+  workflow_dispatch:
+
+jobs:
+  inference-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install application dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Verify selected checkpoint file
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          p = Path("models/best.pt")
+          assert p.is_file() and p.stat().st_size == 10641633, "Original best.pt missing or unexpected"
+          h = hashlib.sha256(p.read_bytes()).hexdigest()
+          assert h == "2719a2bf1e07f922e70c65230871529ad1303b1f706e6f33beb98ad7812a2005", h
+          print("Original checkpoint verified:", h)
+          PY
+      - name: Run shared inference smoke test
+        run: python -m scripts.smoke_test_app
