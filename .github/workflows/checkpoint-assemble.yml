@@ -1,0 +1,50 @@
+name: Install selected model checkpoint
+
+on:
+  push:
+    branches:
+      - docs/reproducibility-and-notebook-cleanup
+    paths:
+      - .github/workflows/checkpoint-assemble.yml
+
+permissions:
+  contents: write
+
+jobs:
+  install-checkpoint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify and assemble original checkpoint
+        run: |
+          python - <<'PY'
+          import base64
+          import hashlib
+          import zipfile
+          from pathlib import Path
+          parts = sorted(Path("models/.checkpoint_transfer").glob("part*.b64"))
+          assert len(parts) == 6, f"Expected six checkpoint parts, got {len(parts)}"
+          encoded = "".join(path.read_text(encoding="utf-8") for path in parts)
+          payload = base64.b64decode(encoded, validate=True)
+          expected = "2719a2bf1e07f922e70c65230871529ad1303b1f706e6f33beb98ad7812a2005"
+          actual = hashlib.sha256(payload).hexdigest()
+          assert actual == expected, f"Checkpoint SHA mismatch: {actual}"
+          target = Path("models/best.pt")
+          target.write_bytes(payload)
+          assert zipfile.is_zipfile(target), "Checkpoint is not a PyTorch archive"
+          assert target.stat().st_size == 10641633, "Unexpected checkpoint size"
+          print(f"Validated original YOLO26n model: {target.stat().st_size} bytes, SHA256={actual}")
+          PY
+      - name: Commit original checkpoint and remove staging files
+        shell: bash
+        run: |
+          git add models/best.pt
+          git rm -r models/.checkpoint_transfer
+          git rm .github/workflows/checkpoint-assemble.yml
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "Add verified original YOLO26n best.pt checkpoint"
+          git push origin HEAD:"${GITHUB_REF_NAME}"
