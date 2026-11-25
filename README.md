@@ -103,11 +103,11 @@ Marine-Guard-AI-/
    ```powershell
    python -m venv .venv
    .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-   .\.venv\Scripts\python.exe scripts/smoke_test_app.py
+   .\.venv\Scripts\python.exe -m scripts.smoke_test_app
    .\.venv\Scripts\python.exe -m streamlit run app/streamlit_app.py
    ```
 
-   The smoke test verifies that the model loads, inference runs and a PNG is produced. A synthetic input **does not measure accuracy**. For a meaningful visual check, run `scripts/smoke_test_app.py --image "path/to/underwater_image.jpg"` with an authorized representative image.
+   The smoke test verifies that the model loads, inference runs and a PNG is produced. A synthetic input **does not measure accuracy**. For a meaningful visual check, run `python -m scripts.smoke_test_app --image "path/to/underwater_image.jpg"` with an authorized representative image.
 
 4. Open the local Streamlit address and test upload, predicted labels, no-detection messaging and annotated-image download.
 
