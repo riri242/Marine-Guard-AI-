@@ -1,0 +1,4 @@
+Copy the selected ORIGINAL YOLO26n checkpoint here and name it best.pt.
+Do not use the Bistrina v2 model or the no-CleanSea ablation checkpoint.
+Original Google Drive path:
+/content/drive/MyDrive/MarineGuard_Model_Selection/budget20_30_v1/runs_budget20_30_v1/final/yolo26n/weights/best.pt
