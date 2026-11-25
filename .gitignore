@@ -1,10 +1,30 @@
+# Local datasets and generated outputs
+data/
+datasets/
+runs/
+outputs/
+artifacts/
+*.cache
+
+# Model training artifacts; keep only the selected inference checkpoint
+models/*
+!models/.gitkeep
+!models/best.pt
+*.onnx
+*.engine
+
+# Python and notebook state
 __pycache__/
 *.py[cod]
+.ipynb_checkpoints/
 .venv/
 venv/
 .env
-.streamlit/secrets.toml
-.ipynb_checkpoints/
-runs/
-datasets/
+.env.*
+!.env.example
+
+# Local IDE and operating-system files
+.vscode/
+.idea/
 .DS_Store
+Thumbs.db
