@@ -44,3 +44,35 @@ jobs:
           PY
       - name: Run shared inference smoke test
         run: python -m scripts.smoke_test_app
+      - name: Verify representative underwater image inference
+        shell: bash
+        run: |
+          python - <<'PY'
+          import base64
+          import io
+          import json
+          from pathlib import Path
+          from PIL import Image
+          notebook = json.loads(Path("notebooks/model_development/02_model_evaluation.ipynb").read_text(encoding="utf-8"))
+          cell = notebook["cells"][6]
+          images = [output["data"]["image/png"] for output in cell.get("outputs", [])
+                    if "image/png" in output.get("data", {})]
+          assert images, "The historical evaluation notebook no longer includes its input image"
+          content = images[0]
+          if isinstance(content, list):
+              content = "".join(content)
+          image = Image.open(io.BytesIO(base64.b64decode(content))).convert("RGB")
+          assert image.width >= 640 and image.height >= 360
+          image.save("/tmp/marineguard_existing_underwater_sample.png")
+          print("Extracted representative sample from existing notebook:", image.size)
+          PY
+          python -m scripts.smoke_test_app \
+            --image /tmp/marineguard_existing_underwater_sample.png \
+            --output outputs/underwater_smoke_test.png
+      - uses: actions/upload-artifact@v4
+        with:
+          name: original-yolo26n-inference-smoke
+          path: |
+            outputs/smoke_test.png
+            outputs/underwater_smoke_test.png
+          retention-days: 14
