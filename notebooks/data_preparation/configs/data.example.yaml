@@ -1,10 +1,10 @@
-# MarineGuard AI - YOLO11 Dataset Configuration
-path: ./MarineGuard_YOLO_Ready  # المسار النسبي لمجلد البيانات
-train: images/train             # صور التدريب (SeaClear)
-val: images/val                 # صور التحقق أثناء التدريب (SeaClear)
-test: images/test               # صور الاختبار الخارجي (TrashCan 1.0)
-
-# عدد الفئات وأسماؤها الموحدة
+# Example YOLO dataset configuration.
+# Update 'path' to the prepared dataset location on your own machine.
+# This file is documentation only; it is not the original experiment data.yaml.
+path: /absolute/path/to/MarineGuard_YOLO_Fixed
+train: images/train
+val: images/val
+test: images/test
 nc: 2
 names:
   0: Net
