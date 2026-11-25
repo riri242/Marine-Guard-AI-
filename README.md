@@ -78,6 +78,7 @@ Marine-Guard-AI-/
 ├── scripts/
 │   ├── smoke_test_app.py              # Check model integration
 │   ├── reproduce_evaluation.py        # Dataset audit + model metrics
+│   ├── benchmark_batch.py             # Local image-processing latency
 │   └── generate_report_figures.py     # Charts from recorded metrics
 ├── reports/figures/
 ├── docs/
@@ -132,6 +133,16 @@ For **evaluation only** (no training), use the original prepared `MarineGuard_YO
 ```
 
 The script audits image and label counts, saves file hashes and computes validation and TrashCan metrics. See [Reproducibility instructions](docs/reproducibility.md) for full assumptions and limitations. [Notebook 07](notebooks/model_development/07_final_model_evaluation_reporting.ipynb) provides a Colab-based evaluation/reporting workflow.
+
+## Measure processing and reviewer time
+
+See the [reviewer-study and app-testing protocol](docs/reviewer_evaluation.md). To measure batch processing with the original model on representative authorized images:
+
+```powershell
+.\.venv\Scripts\python.exe -m scripts.benchmark_batch --images "D:\path\to\sample_images" --max-images 30
+```
+
+This measures local image loading, inference, annotation and PNG encoding; it is **not** yet a deployed Streamlit/browser response-time measurement. Reviewer time savings must be measured separately with actual reviewers.
 
 **Historical notebook warning:** The data-preparation notebooks retain hardcoded local Windows paths and some unsafe operations, including destructive CleanSea removal. They are preserved as a record and **must not be run unchanged against original datasets**. Their outputs do not amount to a verified from-raw-data training reproduction.
 
