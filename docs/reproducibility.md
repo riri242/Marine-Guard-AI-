@@ -4,7 +4,7 @@ The historical experiment notebooks are preserved in `notebooks/model_developmen
 
 ## Inputs
 
-Obtain the team's prepared `MarineGuard_YOLO_Fixed` folder, including `data.yaml`, `images/{train,val,test}`, and `labels/{train,val,test}`, from the authorized dataset owner. The raw images are not distributed in this repository. Place the selected **original** checkpoint at `models/best.pt`.
+Obtain the team's prepared `MarineGuard_YOLO_Fixed` folder, including `data.yaml`, `images/{train,val,test}`, and `labels/{train,val,test}`, from the authorized dataset owner. The raw images are not distributed in this repository. The selected **original** checkpoint is included on `main` at `models/best.pt` (SHA-256: `2719a2bf1e07f922e70c65230871529ad1303b1f706e6f33beb98ad7812a2005`). Verify this hash before evaluation.
 
 Expected dataset inventory (from the recorded experiment):
 
@@ -48,7 +48,7 @@ These are not unbiased deployment estimates: the original validation contains on
 
 Notebook 01 documents five-model screening followed by two finalist runs. The selected original YOLO26n was from an intended 30-epoch finalist stage but the recorded run ended after **21 epochs**, not 30. Reproducing its exact weights requires the same verified dataset bytes, pretrained checkpoint version, random seed, software/CUDA versions, training configuration, and run-interruption history. The notebook may reuse checkpoints found in Drive, and its paths refer to the original Colab environment.
 
-The research notebooks are a **historical experimental record**, not a guaranteed single-command training pipeline. Interactive uploads and `TRAIN_MODE` decisions in later notebooks likewise prevent an unattended `Run all` on a fresh machine. To reproduce the reported evaluation, use the dedicated script above. The team should record the SHA-256 hash of the original `best.pt` and resolve the source of the 300 extra backgrounds before claiming full end-to-end training reproducibility.
+The research notebooks are a **historical experimental record**, not a guaranteed single-command training pipeline. Interactive uploads and `TRAIN_MODE` decisions in later notebooks likewise prevent an unattended `Run all` on a fresh machine. To reproduce the reported evaluation, use the dedicated script above. The selected original `best.pt` SHA-256 is recorded above. The team must still resolve the origin of the 300 extra backgrounds and 193 CleanSea-derived images before claiming full end-to-end training reproducibility.
 
 ## Notebook reading order
 
