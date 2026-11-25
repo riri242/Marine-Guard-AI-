@@ -1,0 +1,43 @@
+name: Research structure checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  notebooks-and-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Compile Python modules
+        run: python -m compileall -q app scripts
+      - name: Validate notebook JSON and code cell syntax
+        run: |
+          python - <<'PY'
+          import ast
+          import json
+          from pathlib import Path
+          root = Path("notebooks/model_development")
+          files = sorted(root.glob("*.ipynb"))
+          assert len(files) >= 6, f"Expected six model-development notebooks, found {len(files)}"
+          for path in files:
+              notebook = json.loads(path.read_text(encoding="utf-8"))
+              assert notebook.get("nbformat") == 4, path
+              for index, cell in enumerate(notebook["cells"]):
+                  if cell["cell_type"] == "code":
+                      source = "".join(cell.get("source", []))
+                      # Colab magic/shell syntax is not valid pure Python.
+                      source = "\n".join(
+                          line for line in source.splitlines()
+                          if not line.lstrip().startswith(("%", "!"))
+                      )
+                      try:
+                          ast.parse(source)
+                      except SyntaxError as error:
+                          raise AssertionError(f"{path} cell {index}: {error}") from error
+          print(f"Validated {len(files)} research notebooks")
+          PY
